@@ -1,0 +1,8 @@
+<user xmlns:o="http://test/" o:name="echoCentral User Template">
+	<status o:nature="property"/>
+	<name o:nature="property"/>
+	<startTime o:nature="time"/>
+	<endTime o:nature="time"/>
+	<contactDetails o:nature="property"/>
+	<user-manager-id o:nature="property"/>
+</user>

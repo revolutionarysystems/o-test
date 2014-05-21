@@ -1,0 +1,12 @@
+<subscription xmlns:o="http://test/" o:name="echoCHECK Subscription Template">
+	<status o:nature="property"/>
+	<title o:nature="property"/>
+	<startTime o:nature="time"/>
+	<endTime o:nature="time"/>
+	<usesUserTemplate o:nature="link"/>
+	<governingProduct o:nature="link"/>
+	<mainUser o:nature="link"/>
+	<users o:nature="collection" o:memberNature="object">
+		<user o:nature="link"/>
+	</users>
+</subscription>

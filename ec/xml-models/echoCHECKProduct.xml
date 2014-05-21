@@ -1,0 +1,36 @@
+<product xmlns:o="http://test/" o:name="echoCHECK Bronze">
+    <template>{templateUid}</template>
+    <status>Created</status>
+	<usesSubscriptionTemplate>{subscriptionTemplateUid}</usesSubscriptionTemplate>
+	<title>echoCHECK Bronze</title>
+	<description>Performs essential checks that web page has rendered correctly</description>
+	<shortCode>eCKB</shortCode>
+	<startTime>01/08/2014 10:00:00</startTime>
+	<endTime/>
+	<limit o:nature="measurement"/>
+	<features>
+		<feature>
+			<name>essentials</name>
+		</feature>
+	</features>
+	<limits>
+		<limit>
+			<name>pages</name>
+			<limit>5</limit>
+		</limit>
+	</limits>
+	<options>
+		<option>
+			<name>Upgrade to Silver</name>
+			<pricingBasis>eCKB-eCKS</pricingBasis>
+		</option>
+		<option>
+			<name>Upgrade to Gold</name>
+			<pricingBasis>eCKB-eCKG</pricingBasis>
+		</option>
+		<option>
+			<name>cancellation</name>
+			<pricingBasis/>
+		</option>
+	</options>
+</product>

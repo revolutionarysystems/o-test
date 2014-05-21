@@ -1,0 +1,11 @@
+<subscription xmlns:o="http://test/">
+	<template>{templateUid}</template>
+	<status>New</status>
+	<title>echoCHECK Bronze</title>
+	<startTime>11/04/2014 00:00:00</startTime>
+	<endTime/>
+	<usesUserTemplate>{userTemplateUid}</usesUserTemplate>
+	<governingProduct>{productUid}</governingProduct>
+	<mainUser>{userUid}</mainUser>	
+	<users/>
+</subscription>

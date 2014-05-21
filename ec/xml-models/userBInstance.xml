@@ -1,0 +1,9 @@
+<user xmlns:o="http://test/" o:name="echoCentral User Template">
+    <template>{templateUid}</template>
+	<status>Active</status>
+	<name>Bernard Bates</name>
+	<startTime>01/04/2014 14:45:00</startTime>
+	<endTime/>
+	<contactDetails>33 Buckingham Boulevard, Basingstoke</contactDetails>
+	<user-manager-id>X45V-87615</user-manager-id>
+</user>
