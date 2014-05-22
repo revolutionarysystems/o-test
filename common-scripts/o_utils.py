@@ -2,6 +2,8 @@ import sys
 import urllib
 import HttpCall
 reload(HttpCall)
+import t_utils
+reload(t_utils)
 
 server = "http://localhost:8080/"
 
@@ -20,7 +22,7 @@ def loadTemplate(case, name="", uid="", trace=0):
     return response
 
 def loadTemplateFromFile(definitionFile):
-    testTemplate = getTestData(definitionFile)
+    testTemplate = t_utils.getTestData(definitionFile)
     template = eval(loadTemplate(testTemplate))
     templateUid = template["id"]
     return templateUid
@@ -125,17 +127,4 @@ def clearInstances(instanceType):
             deleteInstance(instanceType, uid)
         except:
             print "delete failed", uid
-
-#=========TEST UTILS===========
-def getTestData(fileStr, substitutions={}):
-    file = open(fileStr, "r")
-    lines = file.readlines()
-    file.close
-    result = ""
-    for line in lines:
-        result+=line
-    for key in substitutions.keys():
-        result=result.replace(key, substitutions[key])
-    return result
-    
 
