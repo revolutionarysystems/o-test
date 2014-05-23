@@ -20,8 +20,8 @@
 	<options o:nature="collection" o:memberNature="object">
 		<option>
 			<name o:nature="property"/>
-			<pricingBasis o:nature="link"/>
+			<pricingBasis o:nature="link" o:assocType="basis"/>
 		</option>
 	</options>
-	<usesSubscriptionTemplate o:nature="link"/>
+	<usesSubscriptionTemplate o:nature="link" o:assocType="template"/>
 </product>

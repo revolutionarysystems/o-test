@@ -7,6 +7,7 @@ reload(t_utils)
 
 server = "http://localhost:8080/"
 
+null = None;
 
 def loadTemplate(case, name="", uid="", trace=0):
     contextExtension = ""
