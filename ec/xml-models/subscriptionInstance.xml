@@ -5,7 +5,7 @@
 	<startTime>11/04/2014 00:00:00</startTime>
 	<accountNumber>{shortCode}-{=randomInt(1000000)}</accountNumber>
 	<endTime/>
-	<usesUserTemplate>{userTemplateId}</usesUserTemplate>
+	<usesUserTemplate>echoCentral User Template</usesUserTemplate>
 	<governingProduct>{productId}</governingProduct>
 	<mainUser>{userUid}</mainUser>	
 	<users/>
