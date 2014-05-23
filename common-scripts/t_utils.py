@@ -13,6 +13,25 @@ def randomInt(n, case=None):
     i = r.nextInt(n)
     return i
 
+def randomFirstName(case=None):
+    if case==None:
+        r = Random()
+    else:    
+        r = Random(case)
+    firstNames = ["Alan", "Betty", "Carlos", "Denise", "Edward", "Felicity", "Graham", "Harriet", "Ivan", "Judith", "Keith", "Lucy", "Michael", "Nicola", "Owen", "Patsy", "Quentin", "Rosemary", "Stephen", "Tracey", "Ulrich", "Viola", "William"]
+    return firstNames[r.nextInt(len(firstNames))]
+
+def randomName(case=None):
+    return randomFirstName(case=case)+" "+randomLastName(case=case)
+
+def randomLastName(case=None):
+    if case==None:
+        r = Random()
+    else:    
+        r = Random(case)
+    lastNames = ["Anderson", "Baker", "Collins", "Delacruz", "Evans", "Forster", "Gardener", "Hoskins", "Iverson", "Jacoby", "Kelwell", "Lewis", "MacDonald", "Neville", "O'Malley", "Petersen", "Quinn", "Roberts", "Sullivan", "Thomas", "Ulverston", "Vickers", "Watson"]
+    return lastNames[r.nextInt(len(lastNames))]
+
 def resolveOneEvalSubstitution(string):
     if string.find("{=")<0:
         return string
@@ -40,3 +59,4 @@ def getTestData(fileStr, substitutions={}):
         result=result.replace(key, substitutions[key])
     result = resolveEvalSubstitutions(result)  
     return result
+

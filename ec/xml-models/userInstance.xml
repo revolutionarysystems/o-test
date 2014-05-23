@@ -1,5 +1,5 @@
 <user xmlns:o="http://test/" o:name="echoCentral User Template">
-    <template>{templateUid}</template>
+    <template>{templateId}</template>
 	<status>Active</status>
 	<name>{=randomName()}</name>
 	<startTime>01/04/2014 14:45:00</startTime>

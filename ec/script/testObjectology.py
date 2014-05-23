@@ -10,17 +10,16 @@ reload(t_utils)
 
 from java.io import File
 
-def createProductInstance(productTemplateUid, subscriptionTemplateUid, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateUid}":productTemplateUid, "{subscriptionTemplateUid}":subscriptionTemplateUid})
+def createProductInstance(productTemplateId, subscriptionTemplateId, definition):
+    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":productTemplateId, "{subscriptionTemplateId}":subscriptionTemplateId})
     return o_utils.createInstance(testInstance)            
     
-def createUserInstance(userTemplateUid, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateUid}":userTemplateUid})
-    print testInstance
+def createUserInstance(userTemplateId, definition):
+    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":userTemplateId})
     return o_utils.createInstance(testInstance)            
     
-def createSubscriptionInstance(subscriptionTemplateUid, userTemplateUid, productUid, userUid, shortCode, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateUid}":subscriptionTemplateUid,"{userTemplateUid}":userTemplateUid,"{productUid}":productUid,"{userUid}":userUid,"{shortCode}":shortCode})
+def createSubscriptionInstance(subscriptionTemplateId, userTemplateId, productId, userId, shortCode, definition):
+    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":subscriptionTemplateId,"{userTemplateId}":userTemplateId,"{productId}":productId,"{userId}":userId,"{shortCode}":shortCode})
     return o_utils.createInstance(testInstance)            
 
 def show(list, type):
@@ -30,16 +29,16 @@ def show(list, type):
 def catalog(type):
     if type == "templates":
         print "Templates"
-        show(o_utils.getTemplateUidsAndNames(), type)   
+        show(o_utils.getTemplateIdsAndNames(), type)   
     elif type == "product":
         print "Products"
-        show(o_utils.getInstanceUidsAndNames("product", description="title"), type)
+        show(o_utils.getInstanceIdsAndNames("product", description="title"), type)
     elif type == "subscription":
         print "Subscriptions"
-        show(o_utils.getInstanceUidsAndNames("subscription", description="accountNumber"), type)
+        show(o_utils.getInstanceIdsAndNames("subscription", description="accountNumber"), type)
     elif type == "user":
         print "Users"
-        show(o_utils.getInstanceUidsAndNames("user", description="name"), type)
+        show(o_utils.getInstanceIdsAndNames("user", description="name"), type)
        
     print "-----"
 
@@ -69,23 +68,18 @@ def simpleDataSet():
     clearData()
     loadTemplates()
 
-    productTemplateUid = o_utils.getTemplateUidByName("EC Product Template")
-    subscriptionTemplateUid = o_utils.getTemplateUidByName("echoCHECK Subscription Template")
-    userTemplateUid = o_utils.getTemplateUidByName("echoCentral User Template")
+    productTemplateId = o_utils.getTemplateIdByName("EC Product Template")
+    subscriptionTemplateId = o_utils.getTemplateIdByName("echoCHECK Subscription Template")
+    userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
 
-    createProductInstance(productTemplateUid, subscriptionTemplateUid,"../xml-models/echoCHECKProduct.xml")
+    createProductInstance(productTemplateId, subscriptionTemplateId,"../xml-models/echoCHECKProduct.xml")
     shortCode="eCKB"
-    productUid = o_utils.getInstanceUidByProperty("product", "shortCode", shortCode)
+    productId = o_utils.getInstanceIdByProperty("product", "shortCode", shortCode)
 
-    createUserInstance(userTemplateUid,"../xml-models/userAInstance.xml")    
-    userUidA = o_utils.getInstanceUidByProperty("user", "name", "Alice Anderson")
 
-    createSubscriptionInstance(subscriptionTemplateUid, userTemplateUid, productUid, userUidA, shortCode, "../xml-models/subscriptionInstance.xml")
-
-    createUserInstance(userTemplateUid,"../xml-models/userBInstance.xml")    
-    userUidB = o_utils.getInstanceUidByProperty("user", "name", "Bernard Bates")
-
-    createSubscriptionInstance(subscriptionTemplateUid, userTemplateUid, productUid, userUidB, shortCode, "../xml-models/subscriptionInstance.xml")
+    for i in range(20):
+        userId = o_utils.getIdFromJSON(createUserInstance(userTemplateId,"../xml-models/userInstance.xml"))
+        createSubscriptionInstance(subscriptionTemplateId, userTemplateId, productId, userId, shortCode, "../xml-models/subscriptionInstance.xml")
 
     catalogs()
 

@@ -1,4 +1,4 @@
-<user xmlns:o="http://test/" o:name="echoCentral User Template">
+<user xmlns:o="http://test/">
     <template>{templateUid}</template>
 	<status>Active</status>
 	<name>Alice Anderson</name>

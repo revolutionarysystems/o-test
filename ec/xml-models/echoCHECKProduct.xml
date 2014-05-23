@@ -1,7 +1,7 @@
 <product xmlns:o="http://test/" o:name="echoCHECK Bronze">
-    <template>{templateUid}</template>
+    <template>{templateId}</template>
     <status>Created</status>
-	<usesSubscriptionTemplate>{subscriptionTemplateUid}</usesSubscriptionTemplate>
+	<usesSubscriptionTemplate>{subscriptionTemplateId}</usesSubscriptionTemplate>
 	<title>echoCHECK Bronze</title>
 	<description>Performs essential checks that web page has rendered correctly</description>
 	<shortCode>eCKB</shortCode>

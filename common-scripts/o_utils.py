@@ -24,8 +24,8 @@ def loadTemplate(case, name="", uid="", trace=0):
 def loadTemplateFromFile(definitionFile):
     testTemplate = t_utils.getTestData(definitionFile)
     template = eval(loadTemplate(testTemplate))
-    templateUid = template["id"]
-    return templateUid
+    templateId = template["id"]
+    return templateId
 
 
 
@@ -37,7 +37,7 @@ def getTemplateByName(name):
     response = HttpCall.callHttpGET(server, "objectology/templates/name/"+urllib.quote(name), {}).strip()
     return response
 
-def getTemplateUidByName(name): 
+def getTemplateIdByName(name): 
     null = None
     template = getTemplateByName(name)
     attList = eval(template)
@@ -51,11 +51,16 @@ def getTemplates():
     response = HttpCall.callHttpGET(server, "objectology/templates/", {}).strip()
     return response
 
-def getUid(object):
+def getId(object):
     attList = object
     return attList["id"]
 
-def getUidAndName(object, description="name"):
+def getIdFromJSON(objectStr):
+    null = None
+    attList = eval(objectStr)
+    return attList["id"]
+
+def getIdAndName(object, description="name"):
     attList =object
     return attList["id"], attList[description]
         
@@ -63,52 +68,52 @@ def getInstanceByProperty(instanceType, propertyName, value):
     response = HttpCall.callHttpGET(server, "objectology/"+instanceType+"/"+propertyName+"/"+urllib.quote(value), {}).strip()
     return response
 
-def getInstanceUidByProperty(instanceType, propertyName, value): 
+def getInstanceIdByProperty(instanceType, propertyName, value): 
     null = None
     template = getInstanceByProperty(instanceType, propertyName, value)
-    attList = eval(template)
+    attList = eval(template)[0]
     return attList["id"]
 
 
-def getUidsFromObjects(objectsStr):
+def getIdsFromObjects(objectsStr):
     uids = []
     null = None
     objects= eval(objectsStr)
     for object in objects:
-        uids.append(getUid(object))
+        uids.append(getId(object))
     return uids
         
-def getUidsAndNamesFromObjects(objectsStr, description="name"):
+def getIdsAndNamesFromObjects(objectsStr, description="name"):
     uidsAndNames = []
     null = None
     objects= eval(objectsStr)
     for object in objects:
-        uidsAndNames.append(getUidAndName(object, description=description))
+        uidsAndNames.append(getIdAndName(object, description=description))
     return uidsAndNames
         
-def getTemplateUids():
+def getTemplateIds():
     templates = getTemplates()
-    return getUidsFromObjects(templates)
+    return getIdsFromObjects(templates)
 
-def getTemplateUidsAndNames():
+def getTemplateIdsAndNames():
     templates = getTemplates()
-    return getUidsAndNamesFromObjects(templates)
+    return getIdsAndNamesFromObjects(templates)
 
-def getInstanceUidsAndNames(instanceType, description="name"):
+def getInstanceIdsAndNames(instanceType, description="name"):
     objects = getInstances(instanceType)###
-    return getUidsAndNamesFromObjects(objects, description=description)
+    return getIdsAndNamesFromObjects(objects, description=description)
 
 
-def getInstanceUids(type):
+def getInstanceIds(type):
     instances = getInstances(type)
-    return getUidsFromObjects(instances)
+    return getIdsFromObjects(instances)
 
 def getInstances(type):
     response = HttpCall.callHttpGET(server, "objectology/{type}/".replace("{type}", type), {}).strip()
     return response
         
 def clearTemplates():
-    uids = getTemplateUids()
+    uids = getTemplateIds()
     for uid in uids:
         deleteTemplate(uid)
         
@@ -121,7 +126,7 @@ def deleteInstance(instanceType, uid):
     return response
 
 def clearInstances(instanceType):
-    uids = getInstanceUids(instanceType)
+    uids = getInstanceIds(instanceType)
     for uid in uids:
         try:
             deleteInstance(instanceType, uid)
