@@ -66,7 +66,7 @@ def getIdAndName(object, description="name"):
     return attList["id"], attList[description]
         
 def getInstanceByProperty(instanceType, propertyName, value): 
-    response = HttpCall.callHttpGET(server, "objectology/"+instanceType+"/"+propertyName+"/"+urllib.quote(value), {}).strip()
+    response = HttpCall.callHttpGET(server, "objectology/"+instanceType+"/query", {propertyName: value}).strip()
     return response
 
 def getInstanceIdByProperty(instanceType, propertyName, value): 
