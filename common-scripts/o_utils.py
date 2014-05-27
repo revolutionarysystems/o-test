@@ -19,7 +19,7 @@ def loadTemplate(case, name="", uid="", trace=0):
         print case
         print name
         print uid
-    response = HttpCall.callHttpPOST(server, "objectology/templates/"+contextExtension, {"data":case}).strip()
+    response = HttpCall.callHttpPOST(server, "objectology/template/"+contextExtension, {"data":case}).strip()
     return response
 
 def loadTemplateFromFile(definitionFile):
@@ -31,11 +31,11 @@ def loadTemplateFromFile(definitionFile):
 
 
 def deleteTemplate(uid): 
-    response = HttpCall.callHttpDELETE(server, "objectology/templates/"+uid, {}).strip()
+    response = HttpCall.callHttpDELETE(server, "objectology/template/"+uid, {}).strip()
     return response
 
 def getTemplateByName(name): 
-    response = HttpCall.callHttpGET(server, "objectology/templates/name/"+urllib.quote(name), {}).strip()
+    response = HttpCall.callHttpGET(server, "objectology/template/name/"+urllib.quote(name), {}).strip()
     return response
 
 def getTemplateIdByName(name): 
@@ -45,11 +45,11 @@ def getTemplateIdByName(name):
     return attList["id"]
 
 def deleteTemplateByName(name): 
-    response = HttpCall.callHttpDELETE(server, "objectology/templates/name/"+name, {}).strip()
+    response = HttpCall.callHttpDELETE(server, "objectology/template/name/"+name, {}).strip()
     return response
 
 def getTemplates():
-    response = HttpCall.callHttpGET(server, "objectology/templates/", {}).strip()
+    response = HttpCall.callHttpGET(server, "objectology/template/", {}).strip()
     return response
 
 def getId(object):
