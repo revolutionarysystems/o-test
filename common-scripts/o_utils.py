@@ -24,6 +24,7 @@ def loadTemplate(case, name="", uid="", trace=0):
 
 def loadTemplateFromFile(definitionFile):
     testTemplate = t_utils.getTestData(definitionFile)
+    print testTemplate
     template = eval(loadTemplate(testTemplate))
     templateId = template["id"]
     return templateId
@@ -84,6 +85,12 @@ def getIdsFromObjects(objectsStr):
         uids.append(getId(object))
     return uids
         
+def getIdsFromIdResponse(responseStr):
+    ids = []
+    cleanResponse = responseStr.replace('{"id":','').replace('}','')
+    ids= eval(cleanResponse)
+    return ids
+        
 def getIdsAndNamesFromObjects(objectsStr, description="name"):
     uidsAndNames = []
     null = None
@@ -104,10 +111,9 @@ def getInstanceIdsAndNames(instanceType, description="name"):
     objects = getInstances(instanceType)###
     return getIdsAndNamesFromObjects(objects, description=description)
 
-
 def getInstanceIds(type):
-    instances = getInstances(type)
-    return getIdsFromObjects(instances)
+    response = HttpCall.callHttpGET(server, "objectology/{type}/".replace("{type}", type), {"view":"identifier"}).strip()
+    return getIdsFromIdResponse(response)
 
 def getInstances(type):
     response = HttpCall.callHttpGET(server, "objectology/{type}/".replace("{type}", type), {}).strip()
@@ -118,8 +124,8 @@ def clearTemplates():
     for uid in uids:
         deleteTemplate(uid)
         
-def createInstance(case):
-    response = HttpCall.callHttpPOST(server, "objectology/subscription/", {"data":case}).strip()
+def createInstance(instanceType, case):
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/", {"data":case}).strip()
     return response
     
 def deleteInstance(instanceType, uid): 

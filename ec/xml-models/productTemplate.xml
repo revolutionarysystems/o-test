@@ -23,5 +23,5 @@
 			<pricingBasis o:nature="link" o:assocType="basis"/>
 		</option>
 	</options>
-	<usesSubscriptionTemplate o:nature="link" o:assocType="template"/>
+	<usesAccountTemplate o:nature="link" o:assocType="template"/>
 </product>
