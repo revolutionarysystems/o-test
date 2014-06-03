@@ -1,0 +1,37 @@
+<account xmlns:o="http://test/" o:name="echoCentral Account Template">
+	<!--defaultSubscription o:name="echoCentral Service Template" o:nature="object">
+		<status/>
+		<title>echoCentral Base Service</title>
+		<startTime o:nature="time"/>
+		<endTime o:nature="time"/>
+		<governingProduct o:nature="link" o:assocType="product"/>
+	</defaultSubscription>
+	<subscription o:name="echoCHECK Service Template" o:nature="object">
+		<status/>
+		<title>echoCHECK Service</title>
+		<startTime o:nature="time"/>
+		<endTime o:nature="time"/>
+		<governingProduct o:nature="link" o:assocType="product"/>
+	</subscription-->
+	<subscriptions o:nature="collection" o:memberNature="object">
+		<subscription o:name="echoCHECK Service Template" o:nature="object">
+			<status/>
+			<title/>
+			<startTime o:nature="time"/>
+			<endTime o:nature="time"/>
+			<governingProduct o:nature="link" o:assocType="product"/>
+		</subscription>
+	</subscriptions>
+	<status/>
+	<title/>
+	<description/>
+	<accountNumber/>
+	<startTime o:nature="time"/>
+	<endTime o:nature="time"/>
+	<usesUserTemplate o:nature="link" o:assocType="template" o:refType="name"/>
+	<governingProduct o:nature="link" o:assocType="product"/>
+	<mainUser o:nature="link" o:assocType="user"/>
+	<users o:nature="collection" o:memberNature="link">
+		<user o:nature="link" o:assocType="user"/>
+	</users>
+</account>
