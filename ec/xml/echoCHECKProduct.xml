@@ -1,5 +1,6 @@
-<product xmlns:o="http://test/" o:name="echoCHECK Bronze">
+<product xmlns:o="http://test/">
     <template>{templateId}</template>
+	<name>echoCHECK Bronze</name>
     <status>Created</status>
 	<usesAccountTemplate>{accountTemplateId}</usesAccountTemplate>
 	<title>echoCHECK Bronze</title>
