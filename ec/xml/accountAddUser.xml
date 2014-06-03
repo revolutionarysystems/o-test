@@ -1,0 +1,5 @@
+<account xmlns:o="http://test/">
+	<users o:action="add">
+		<user>{userId}</user>
+	</users>
+</account>

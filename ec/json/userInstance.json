@@ -1,0 +1,9 @@
+{
+	"template": "{templateId}",
+	"status": "Active",
+	"name": "{=randomName()}",
+	"startTime": "11/04/2014 00:00:00",
+	"endTime": "",
+	"contactDetails": "<contactDetails><address country = \"GB\"><line1>88 Acacia Avenue</line1><line2>Alresford</line2><postcode>{=randomPostCode(case=case)}</postcode><country>UK</country></address><email>user1@test.con</email><phone prefix = \"+44\">0767-565-178</phone></contactDetails>",
+	"user-manager-id": "X45V-{=randomInt(10000)}"
+}

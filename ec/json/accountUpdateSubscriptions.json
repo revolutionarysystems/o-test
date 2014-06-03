@@ -1,0 +1,25 @@
+{
+	"subscriptions": [
+		{
+			"title": "echoCentral base services",
+			"status": "New",
+			"startTime": "11/04/2014 00:00:00",
+			"endTime": "",
+			"governingProduct": "{eCntProductId}"
+		},
+		{
+			"title": "echoCHECK services",
+			"status": "New",
+			"startTime": "11/04/2014 00:00:00",
+			"endTime": "11/07/2014 00:00:00",
+			"governingProduct": "{eCKProductId}"
+		},
+		{
+			"title": "echoCHAT services",
+			"status": "New",
+			"startTime": "11/04/2014 00:00:00",
+			"endTime": "",
+			"governingProduct": "{eCTProductId}"
+		}
+	]
+}

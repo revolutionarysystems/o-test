@@ -5,13 +5,16 @@ from java.io import DataOutputStream
 from java.io import BufferedReader
 from java.io import InputStreamReader
 
-def post(targetURL, params):
+def post(targetURL, params, contentType="text/xml"):
 
     paramStr = params["data"]
     url = URL(targetURL)
+    #print targetURL
+    #print paramStr
+    #print contentType
     connection = url.openConnection()
     connection.setRequestMethod("POST")
-    connection.setRequestProperty("Content-Type", "text/xml")
+    connection.setRequestProperty("Content-Type", contentType)
     connection.setRequestProperty("Content-Length", str(len(paramStr)))
     connection.setRequestProperty("Content-Language", "en-GB")
     connection.setUseCaches(0)
@@ -40,6 +43,7 @@ def get(targetURL, params):
         paramStr+=aKey+"="+URLEncoder.encode(params[aKey], "UTF-8")+"&"
     paramStr=paramStr[:-1]
     url = URL(targetURL+"?"+paramStr)
+    #print url
     connection = url.openConnection()
     connection.setRequestMethod("GET")    
     connection.setRequestProperty("Content-Language", "en-GB")
@@ -74,8 +78,8 @@ def delete(targetURL, params):
     return response
     
 
-def callHttpPOST(uri, service, data):
-    response = post(uri+service, data)
+def callHttpPOST(uri, service, data, contentType="text/xml"):
+    response = post(uri+service, data, contentType=contentType)
     return response
 
 def callHttpDELETE(uri, service, data):

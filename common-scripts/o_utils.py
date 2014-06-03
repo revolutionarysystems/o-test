@@ -24,7 +24,6 @@ def loadTemplate(case, name="", uid="", trace=0):
 
 def loadTemplateFromFile(definitionFile):
     testTemplate = t_utils.getTestData(definitionFile)
-    print testTemplate
     template = eval(loadTemplate(testTemplate))
     templateId = template["id"]
     return templateId
@@ -70,6 +69,10 @@ def getInstanceByProperty(instanceType, propertyName, value):
     response = HttpCall.callHttpGET(server, "objectology/"+instanceType+"/query", {propertyName: value}).strip()
     return response
 
+def getInstance(instanceType, id): 
+    response = HttpCall.callHttpGET(server, "objectology/"+instanceType+"/"+id, {}).strip()
+    return response
+
 def getInstanceIdByProperty(instanceType, propertyName, value): 
     null = None
     template = getInstanceByProperty(instanceType, propertyName, value)
@@ -88,7 +91,11 @@ def getIdsFromObjects(objectsStr):
 def getIdsFromIdResponse(responseStr):
     ids = []
     cleanResponse = responseStr.replace('{"id":','').replace('}','')
-    ids= eval(cleanResponse)
+    idStrings = cleanResponse[1:-1].split(",")
+    for idString in idStrings:
+        if idString!='':
+            ids.append(idString[1:-1])
+    #ids= eval(cleanResponse)
     return ids
         
 def getIdsAndNamesFromObjects(objectsStr, description="name"):
@@ -108,12 +115,16 @@ def getTemplateIdsAndNames():
     return getIdsAndNamesFromObjects(templates)
 
 def getInstanceIdsAndNames(instanceType, description="name"):
-    objects = getInstances(instanceType)###
+    objects = getInstances(instanceType)
     return getIdsAndNamesFromObjects(objects, description=description)
 
 def getInstanceIds(type):
     response = HttpCall.callHttpGET(server, "objectology/{type}/".replace("{type}", type), {"view":"identifier"}).strip()
     return getIdsFromIdResponse(response)
+
+def getInstanceSummaries(type):
+    response = HttpCall.callHttpGET(server, "objectology/{type}/".replace("{type}", type), {"view":"summary"}).strip()
+    return response
 
 def getInstances(type):
     response = HttpCall.callHttpGET(server, "objectology/{type}/".replace("{type}", type), {}).strip()
@@ -124,8 +135,12 @@ def clearTemplates():
     for uid in uids:
         deleteTemplate(uid)
         
-def createInstance(instanceType, case):
-    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/", {"data":case}).strip()
+def createInstance(instanceType, case, contentType="xml"):
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/", {"data":case}, contentType=contentType).strip()
+    return response
+    
+def applyDelta(instanceTypeAndId, case, contentType="xml"):
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceTypeAndId+"/", {"data":case}, contentType=contentType).strip()
     return response
     
 def deleteInstance(instanceType, uid): 
@@ -137,6 +152,18 @@ def clearInstances(instanceType):
     for uid in uids:
         try:
             deleteInstance(instanceType, uid)
-        except:
+        except Exception, e:
             print "delete failed", uid
+            print e
 
+def getCollectionFromJSON(objectStr, collection):
+    null = None
+    attList = eval(objectStr)
+    return attList[collection]
+
+def makeQuery(instanceType, case):
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/query", {"data":case}, contentType="application/json").strip()
+    null = None
+    instances = eval(response)
+    return instances
+    

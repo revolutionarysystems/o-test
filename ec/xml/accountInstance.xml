@@ -1,0 +1,29 @@
+<account xmlns:o="http://test/">
+	<template>{templateId}</template>
+	<status>New</status>
+	<title>echoCHECK Bronze</title>
+	<startTime>11/04/2014 00:00:00</startTime>
+	<description>echoCHECK Bronze {shortCode}-{=randomInt(1000000, case=case)}</description>
+	<accountNumber>{shortCode}-{=randomInt(1000000, case=case)}</accountNumber>
+	<endTime/>
+	<usesUserTemplate>echoCentral User Template</usesUserTemplate>
+	<governingProduct>{productId}</governingProduct>
+	<subscriptions>
+		<subscription>
+			<title>echoCentral base services</title>
+			<status>New</status>
+			<startTime>11/04/2014 00:00:00</startTime>
+			<endTime/>
+			<governingProduct>{eCntProductId}</governingProduct>
+		</subscription>
+		<subscription>
+			<title>echoCHECK services</title>
+			<status>New</status>
+			<startTime>11/04/2014 00:00:00</startTime>
+			<endTime/>
+			<governingProduct>{eCKProductId}</governingProduct>
+		</subscription>
+	</subscriptions>
+	<mainUser>{userId}</mainUser>	
+	<users/>
+</account>

@@ -1,0 +1,30 @@
+{
+	"template": "{templateId}",
+	"status": "New",
+	"title": "echoCHECK Bronze",
+	"startTime": "11/04/2014 00:00:00",
+	"description": "echoCHECK Bronze {shortCode}-{=randomInt(1000000, case=case)}",
+	"accountNumber": "{shortCode}-{=randomInt(1000000, case=case)}",
+	"endTime": "",
+	"usesUserTemplate": "echoCentral User Template",
+	"governingProduct": "{productId}",
+	"subscriptions": [
+		{
+			"title": "echoCentral base services",
+			"status": "New",
+			"startTime": "11/04/2014 00:00:00",
+			"endTime": "",
+			"governingProduct": "{eCntProductId}"
+		},
+		{
+			"title": "echoCHECK services",
+			"status": "New",
+			"startTime": "11/04/2014 00:00:00",
+			"endTime": "",
+			"governingProduct": "{eCKProductId}"
+		},
+	],
+	"mainUser": "{userId}",
+	"users": []
+}
+

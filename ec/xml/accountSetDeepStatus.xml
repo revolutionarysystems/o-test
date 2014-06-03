@@ -1,0 +1,9 @@
+<account xmlns:o="http://test/">
+	<status>{status}</status>
+	<subscription>
+		<status>{status}</status>
+	</subscription>
+	<defaultSubscription>
+		<status>{status}</status>
+	</defaultSubscription>
+</account>

@@ -1,0 +1,11 @@
+<account xmlns:o="http://test/">
+	<subscriptions o:action="add">
+		<subscription>
+			<title>echoCHAT services</title>
+			<status>New</status>
+			<startTime>11/06/2014 00:00:00</startTime>
+			<endTime/>
+			<governingProduct>{eCTProductId}</governingProduct>
+		</subscription>
+	</subscriptions>
+</account>

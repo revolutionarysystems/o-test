@@ -1,0 +1,29 @@
+<product xmlns:o="http://test/">
+    <template>{templateId}</template>
+	<name>echoCentral Base</name>
+    <status>Created</status>
+	<usesAccountTemplate>{accountTemplateId}</usesAccountTemplate>
+	<title>echoCentral Base</title>
+	<description>Basic monitoring of your web pages in the wild</description>
+	<shortCode>eCntB</shortCode>
+	<startTime>01/08/2014 10:00:00</startTime>
+	<endTime/>
+	<limit o:nature="measurement"/>
+	<features>
+		<feature>
+			<name>essentials</name>
+		</feature>
+	</features>
+	<limits>
+		<limit>
+			<name>pages</name>
+			<limit>5</limit>
+		</limit>
+	</limits>
+	<options>
+		<option>
+			<name>cancellation</name>
+			<pricingBasis/>
+		</option>
+	</options>
+</product>

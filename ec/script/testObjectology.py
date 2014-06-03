@@ -7,89 +7,20 @@ import o_utils
 reload(o_utils)
 import t_utils
 reload(t_utils)
+import s_utils
+reload(s_utils)
 
 from java.io import File
+from java.io import FileNotFoundException
 from java.util import Date
 
-def createProductInstance(productTemplateId, accountTemplateId, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":productTemplateId, "{accountTemplateId}":accountTemplateId})
-    return o_utils.createInstance("product", testInstance)            
-    
-def createUserInstance(userTemplateId, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":userTemplateId})
-    return o_utils.createInstance("user", testInstance)            
-    
-def createSubscriptionInstance(subscriptionTemplateId, userTemplateId, productId, userId, shortCode, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":subscriptionTemplateId,"{userTemplateId}":userTemplateId,"{productId}":productId,"{userId}":userId,"{shortCode}":shortCode})
-    return o_utils.createInstance("subscription", testInstance)            
-
-def createAccountInstance(accountTemplateId, userTemplateId, productId, userId, shortCode, definition):
-    testInstance = t_utils.getTestData(definition, substitutions = {"{templateId}":accountTemplateId,"{userTemplateId}":userTemplateId,"{productId}":productId,"{userId}":userId,"{shortCode}":shortCode})
-    return o_utils.createInstance("account", testInstance)            
-
-def show(list, type):
-    for item in list:
-        print "http://localhost:8080/objectology/"+type+"/"+item[0], " - ", item[1]
-
-def showId(list, type):
-    for item in list:
-        print "http://localhost:8080/objectology/"+type+"/"+item
-
-def catalog(type):
-    if type == "templates":
-        print "Templates"
-        show(o_utils.getTemplateIdsAndNames(), type)   
-    elif type == "product":
-        print "Products"
-        show(o_utils.getInstanceIdsAndNames("product", description="title"), type)
-    elif type == "account":
-        print "Accounts"
-        show(o_utils.getInstanceIdsAndNames("account", description="accountNumber"), type)
-    elif type == "subscription":
-        print "Subscriptions"
-        show(o_utils.getInstanceIdsAndNames("subscription", description="accountNumber"), type)
-    elif type == "user":
-        print "Users"
-        show(o_utils.getInstanceIdsAndNames("user", description="name"), type)
-       
-    print "-----"
-
-def idCatalog(type):
-    if type == "templates":
-        print "Templates"
-        show(o_utils.getTemplateIdsAndNames(), type)   
-    else:
-        print type+"(s)"
-        showId(o_utils.getInstanceIds(type), type)
-    print "-----"
-
-def catalogs():
-    catalog("templates")
-    catalog("product")
-    catalog("account")
-    catalog("subscription")
-    catalog("user")
-
-def idCatalogs():
-    catalog("templates")
-    idCatalog("product")
-    idCatalog("account")
-    idCatalog("subscription")
-    idCatalog("user")
-
-def clearData():    
-    o_utils.clearInstances("user")
-    o_utils.clearInstances("account")
-    o_utils.clearInstances("subscription")
-    o_utils.clearInstances("product")
-    o_utils.clearTemplates()
 
 
 def loadTemplates():
-    o_utils.loadTemplateFromFile("../xml-models/userTemplate.xml")
-    o_utils.loadTemplateFromFile("../xml-models/echoCentralAccountTemplate.xml")
-    #o_utils.loadTemplateFromFile("../xml-models/subscriptionTemplate.xml")
-    o_utils.loadTemplateFromFile("../xml-models/productTemplate.xml")
+    o_utils.loadTemplateFromFile("../"+format+"/templates/userTemplate.xml")
+    o_utils.loadTemplateFromFile("../"+format+"/templates/echoCentralAccountTemplate.xml")
+    #o_utils.loadTemplateFromFile("../"+format+"/templates/subscriptionTemplate.xml")
+    o_utils.loadTemplateFromFile("../"+format+"/templates/productTemplate.xml")
 
 
 
@@ -97,30 +28,175 @@ def simpleDataSet():
     #Build Sample Data from scratch
 
     print Date()
-    clearData()
+    s_utils.clearData()
     loadTemplates()
 
     productTemplateId = o_utils.getTemplateIdByName("EC Product Template")
-    #subscriptionTemplateId = o_utils.getTemplateIdByName("echoCHECK Subscription Template")
     accountTemplateId = o_utils.getTemplateIdByName("echoCentral Account Template")
     userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
 
-    createProductInstance(productTemplateId, accountTemplateId,"../xml-models/echoCHECKProduct.xml")
-    shortCode="eCKB"
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCHECKProduct.xml")
+    eCKBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCKB")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCHATProduct.xml")
+    eCTBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCTB")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCentralBaseProduct.xml")
+    eCntBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCntB")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCentralAccountProduct.xml")
+    shortCode="eCnt"
     productId = o_utils.getInstanceIdByProperty("product", "shortCode", shortCode)
 
     print Date()
-    for i in range(25):
-        userId = o_utils.getIdFromJSON(createUserInstance(userTemplateId,"../xml-models/userInstance.xml"))
-        createAccountInstance(accountTemplateId, userTemplateId, productId, userId, shortCode, "../xml-models/accountInstance.xml")
+    for i in range(10):
+        if i%100==0:
+            print "account #", i
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance.xml"))
+        accountId = o_utils.getIdFromJSON(s_utils.createAccountInstance(accountTemplateId, userTemplateId, productId, eCntBProdId, eCKBProdId, userId, shortCode, "../"+format+"/accountInstance.xml", case=i))
+        s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser.xml", case=i)
+        for j in range(9):
+            userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance.xml", case=10000*i+j))
+            s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser.xml", case=i)
+        if t_utils.randomBoolean(0.6):
+            s_utils.setStatus("account", accountId, "Live", "../"+format+"/accountSetDeepStatus.xml", case=i)
+        if t_utils.randomBoolean(0.6):
+            s_utils.updateAccount(accountId, "../"+format+"/accountAddSubscription.xml", substitutions = {"{eCTProductId}":eCTBProdId}, case=i)
+
 
     print Date()
-    catalogs()
-    #idCatalogs()
+    #s_utils.catalogs()
+    s_utils.idCatalogs()
     print Date()
 
+
+
+def contentType(format):
+    if format=="xml":
+        return "text/xml"
+    elif format == "json":
+        return "application/json"
+    else:
+        return "text/plain"
+    
+
+
+def servicesCatalog(format="xml"):
+    #account.list
+    def account_list():
+        return o_utils.getInstanceSummaries("account")
+    #print account_list()
+
+
+    #account.create
+    def createAccount(contentType="xml"):
+        productTemplateId = o_utils.getTemplateIdByName("EC Product Template")
+        accountTemplateId = o_utils.getTemplateIdByName("echoCentral Account Template")
+        userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+        productId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCnt")
+        eCntBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCntB")
+        eCKBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCKB")
+        userId=""
+        accountId = o_utils.getIdFromJSON(s_utils.createAccountInstance(accountTemplateId, userTemplateId, productId, eCntBProdId, eCKBProdId, userId, "eCnt", "../"+format+"/accountInstance."+format, contentType=contentType))
+        return accountId
+    accountId=createAccount(contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+
+    #account.update
+    def accountMainUser(accountId, contentType="xml"):
+        userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType))
+        s_utils.setAccountMainUser(accountId, userId, "../"+format+"/accountMainUser."+format, contentType=contentType)
+        return userId
+    userId = accountMainUser(accountId, contentType=contentType(format))
+    s_utils.showLink(userId,"user/")
+
+    #account.details
+    s_utils.showLink(accountId,"account/")
+
+    #(user.details)
+    s_utils.showLink(userId,"user/")
+
+    #account.delete
+    o_utils.deleteInstance("account", accountId)
+
+    try:
+        print o_utils.getIdFromJSON(o_utils.getInstance("account", accountId))
+    except FileNotFoundException, e:
+        print "Not Found:",e
+
+
+
+    #subscription.list
+    #subscription.details
+    accountId=createAccount(contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+    subscriptions = o_utils.getCollectionFromJSON(o_utils.getInstance("account", accountId), "subscriptions")
+
+    #subscription.create
+    eCTBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCTB")
+    s_utils.updateAccount(accountId, "../"+format+"/accountAddSubscription."+format, substitutions = {"{eCTProductId}":eCTBProdId}, contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+
+
+    #subscription.update
+    eCntBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCntB")
+    eCKBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCKB")
+    eCTBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCTB")
+    s_utils.updateAccount(accountId, "../"+format+"/accountUpdateSubscriptions."+format, substitutions = {"{eCTProductId}":eCTBProdId,"{eCKProductId}":eCKBProdId,"{eCntProductId}":eCntBProdId}, contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+
+
+    #subscription.delete
+    eCntBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCntB")
+    eCTBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCTB")
+    s_utils.updateAccount(accountId, "../"+format+"/accountDeleteSubscription."+format, substitutions = {"{eCTProductId}":eCTBProdId,"{eCKProductId}":eCKBProdId,"{eCntProductId}":eCntBProdId}, contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+
+
+    userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+    for i in range(1):
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
+        s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser."+format, contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+
+
+    #user.list
+    #user.details
+    users = o_utils.getCollectionFromJSON(o_utils.getInstance("account", accountId), "users")
+    for user in users:
+        s_utils.showLink(user,"user/query?view=summary&_id=")
+        s_utils.showLink(user,"user/")
+
+    #user.create
+    userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
+    s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser."+format, contentType=contentType(format))
+    s_utils.showLink(accountId,"account/")
+
+    #user.update
+    s_utils.updateUser(userId, "../"+format+"/userUpdateAddress."+format,contentType=contentType(format))
+    s_utils.showLink(userId,"user/")
+
+    #user.delete
+    userIds = o_utils.getCollectionFromJSON(o_utils.getInstance("account", accountId), "users")
+    userIds.remove(userIds[0])
+    s_utils.updateAccount(accountId, "../"+format+"/accountDeleteUsers."+format, substitutions = {"{users}":t_utils.buildLinkCollection("users", "user", userIds, format=format)}, contentType=contentType(format))
 
 
 #simpleDataSet()    
-loadTemplates()
-idCatalogs()
+
+servicesCatalog(format="xml")
+#servicesCatalog(format="json")
+
+def queryCatalog():
+
+    #result = queryInstance("user", "../json/queryUserName.json", substitutions={"{name}":"Viola Sullivan"})
+    result = s_utils.queryInstance("user", "../json/queryFieldLike.json", substitutions={"{field}":"name", "{fragment}":"Kel"})
+
+    #result = queryInstance("user", "../json/queryFieldLike.json", substitutions={"{field}":"contactDetails", "{fragment}":"gu6 6a"})
+    #result = queryInstance("user", "../json/queryFieldLike.json", substitutions={"{field}":"user-manager-id", "{fragment}":"X45V-2241"})
+
+    #result = queryInstance("user", "../json/queryFieldLike.json", substitutions={"{field}":"name", "{fragment}":"Kel"})
+    #print queryInstance("user", "../json/query_id.json", substitutions={"{id}":"eb498e8a-05e2-4f46-a459-26aab43832a0"})
+
+    for instance in result:
+        print instance
+
+#queryCatalog()
