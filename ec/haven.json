@@ -1,0 +1,16 @@
+{
+	"repositories": {
+		"dependencies": [
+			{
+                "type": "haven",
+				"url": "http://build.revsys.co.uk/haven-repository"
+			}
+		]
+	},
+    "dependencies": [
+        {
+            "name": "subscription-manager-templates",
+            "version": "0.1.0-SNAPSHOT"
+        }
+    ]
+}

@@ -97,6 +97,6 @@ def getTestData(fileStr, substitutions={}, case=0):
         result+=line
     for key in substitutions.keys():
         result=result.replace(key, substitutions[key])
-    result = resolveEvalSubstitutions(result, case=case)  
+    result = resolveEvalSubstitutions(result, case=case) 
     return result
 
