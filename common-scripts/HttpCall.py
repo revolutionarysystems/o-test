@@ -1,20 +1,31 @@
 import sys
+import base64
 from java.net import URL
 from java.net import URLEncoder
 from java.io import DataOutputStream
 from java.io import BufferedReader
 from java.io import InputStreamReader
 
-def post(targetURL, params, contentType="text/xml"):
+def post(targetURL, params, contentType="text/xml", username=None):
 
-    paramStr = params["data"]
+    #paramStr = params["data"]
+    paramStr = ""
+    for aKey in params.keys():
+        paramStr+=aKey+"="+URLEncoder.encode(params[aKey], "UTF-8")+"&"
+    paramStr=paramStr[:-1]
     url = URL(targetURL)
-    #print targetURL
-    #print paramStr
-    #print contentType
+    print targetURL
+    print paramStr
+    print contentType
+
     connection = url.openConnection()
+    if username!=None:    
+        userpass = username
+        basicAuth = "Basic " + base64.b64encode(userpass);
+        connection.setRequestProperty ("Authorization", basicAuth);
     connection.setRequestMethod("POST")
-    connection.setRequestProperty("Content-Type", contentType)
+    if contentType != None:
+        connection.setRequestProperty("Content-Type", contentType)
     connection.setRequestProperty("Content-Length", str(len(paramStr)))
     connection.setRequestProperty("Content-Language", "en-GB")
     connection.setUseCaches(0)
@@ -36,15 +47,22 @@ def post(targetURL, params, contentType="text/xml"):
     rd.close()
     return response
     
-def get(targetURL, params):
+def get(targetURL, params, username=None):
 
     paramStr = ""
     for aKey in params.keys():
         paramStr+=aKey+"="+URLEncoder.encode(params[aKey], "UTF-8")+"&"
     paramStr=paramStr[:-1]
     url = URL(targetURL+"?"+paramStr)
-    #print url
+    print url
     connection = url.openConnection()
+
+    if username!=None:    
+        userpass = username
+        basicAuth = "Basic " + base64.b64encode(userpass);
+        print basicAuth
+        connection.setRequestProperty ("Authorization", basicAuth);
+    
     connection.setRequestMethod("GET")    
     connection.setRequestProperty("Content-Language", "en-GB")
     connection.setUseCaches(0)
@@ -78,16 +96,16 @@ def delete(targetURL, params):
     return response
     
 
-def callHttpPOST(uri, service, data, contentType="text/xml"):
-    response = post(uri+service, data, contentType=contentType)
+def callHttpPOST(uri, service, data, contentType="text/xml", username=None):
+    response = post(uri+service, data, contentType=contentType, username=username)
     return response
 
 def callHttpDELETE(uri, service, data):
     response = delete(uri+service, data)
     return response
     
-def callHttpGET(uri, service, data):
-    response = get(uri+service, data)
+def callHttpGET(uri, service, data, username=None):
+    response = get(uri+service, data, username=username)
     return response
     
     
