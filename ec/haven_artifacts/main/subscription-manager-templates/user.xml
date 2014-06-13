@@ -1,0 +1,8 @@
+<user xmlns:o="http://test/" o:name="User Template">
+	<status/>
+	<name/>
+	<startTime o:nature="time"/>
+	<endTime o:nature="time"/>
+	<contactDetails/>
+	<user-manager-id/>
+</user>

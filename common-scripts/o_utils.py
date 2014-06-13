@@ -135,11 +135,11 @@ def clearTemplates():
     for uid in uids:
         deleteTemplate(uid)
         
-def createInstance(instanceType, case, contentType="xml"):
+def createInstance(instanceType, case, contentType="text/xml"):
     response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/", {"data":case}, contentType=contentType).strip()
     return response
     
-def applyDelta(instanceTypeAndId, case, contentType="xml"):
+def applyDelta(instanceTypeAndId, case, contentType="text/xml"):
     response = HttpCall.callHttpPOST(server, "objectology/"+instanceTypeAndId+"/", {"data":case}, contentType=contentType).strip()
     return response
     

@@ -12,11 +12,11 @@ from java.io import File
 from java.io import FileNotFoundException
 from java.util import Date
 
-def createProductInstance(productTemplateId, accountTemplateId, definition):
+def createProductInstance(productTemplateId, accountTemplateId, definition, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = {"{templateId}":productTemplateId, "{accountTemplateId}":accountTemplateId})
-    return o_utils.createInstance("product", testData)            
+    return o_utils.createInstance("product", testData, contentType=contentType)            
     
-def createUserInstance(userTemplateId, definition, case=None, contentType="xml"):
+def createUserInstance(userTemplateId, definition, case=None, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = {"{templateId}":userTemplateId}, case=case)
     return o_utils.createInstance("user", testData, contentType=contentType)            
     
@@ -24,24 +24,24 @@ def createSubscriptionInstance(subscriptionTemplateId, userTemplateId, productId
     testData = t_utils.getTestData(definition, substitutions = {"{templateId}":subscriptionTemplateId,"{userTemplateId}":userTemplateId,"{productId}":productId,"{userId}":userId,"{shortCode}":shortCode})
     return o_utils.createInstance("subscription", testData)            
 
-def createAccountInstance(accountTemplateId, userTemplateId, productId, subProductId1, subProductId2, userId, shortCode, definition, case=0, contentType="xml"):
+def createAccountInstance(accountTemplateId, userTemplateId, productId, subProductId1, subProductId2, userId, shortCode, definition, case=0, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = {"{templateId}":accountTemplateId,"{userTemplateId}":userTemplateId,"{productId}":productId,"{eCntProductId}":subProductId1,"{eCKProductId}":subProductId2,"{userId}":userId,"{shortCode}":shortCode}, case=case)
     #print testData
     return o_utils.createInstance("account", testData, contentType=contentType)            
 
-def addAccountUser(accountId, userId, definition, case=0, contentType="xml"):
+def addAccountUser(accountId, userId, definition, case=0, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = {"{userId}":userId}, case=case)
     return o_utils.applyDelta("account/"+accountId, testData, contentType=contentType)            
 
-def setAccountMainUser(accountId, userId, definition, case=0, contentType="xml"):
+def setAccountMainUser(accountId, userId, definition, case=0, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = {"{userId}":userId}, case=case)
     return o_utils.applyDelta("account/"+accountId, testData, contentType=contentType)            
 
-def updateAccount(accountId, definition, substitutions= {}, case=0, contentType="xml"):
+def updateAccount(accountId, definition, substitutions= {}, case=0, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = substitutions, case=case)
     return o_utils.applyDelta("account/"+accountId, testData, contentType=contentType)            
 
-def updateUser(accountId, definition, case=0, contentType="xml"):
+def updateUser(accountId, definition, case=0, contentType="text/xml"):
     testData = t_utils.getTestData(definition, substitutions = {}, case=case)
     return o_utils.applyDelta("user/"+accountId, testData, contentType=contentType)            
 

@@ -17,10 +17,9 @@ from java.util import Date
 
 
 def loadTemplates():
-    o_utils.loadTemplateFromFile("../"+format+"/templates/userTemplate.xml")
-    o_utils.loadTemplateFromFile("../"+format+"/templates/echoCentralAccountTemplate.xml")
-    #o_utils.loadTemplateFromFile("../"+format+"/templates/subscriptionTemplate.xml")
-    o_utils.loadTemplateFromFile("../"+format+"/templates/productTemplate.xml")
+    o_utils.loadTemplateFromFile("../haven_artifacts/main/subscription-manager-templates/user.xml")
+    o_utils.loadTemplateFromFile("../haven_artifacts/main/subscription-manager-templates/account.xml")
+    o_utils.loadTemplateFromFile("../haven_artifacts/main/subscription-manager-templates/product.xml")
 
 
 
@@ -31,17 +30,17 @@ def simpleDataSet():
     s_utils.clearData()
     loadTemplates()
 
-    productTemplateId = o_utils.getTemplateIdByName("EC Product Template")
-    accountTemplateId = o_utils.getTemplateIdByName("echoCentral Account Template")
-    userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+    productTemplateId = o_utils.getTemplateIdByName("Product Template")
+    accountTemplateId = o_utils.getTemplateIdByName("Account Template")
+    userTemplateId = o_utils.getTemplateIdByName("User Template")
 
-    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCHECKProduct.xml")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../xml/echoCHECKProduct.xml")
     eCKBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCKB")
-    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCHATProduct.xml")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../xml/echoCHATProduct.xml")
     eCTBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCTB")
-    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCentralBaseProduct.xml")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../xml/echoCentralBaseProduct.xml")
     eCntBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCntB")
-    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../"+format+"/echoCentralAccountProduct.xml")
+    s_utils.createProductInstance(productTemplateId, accountTemplateId,"../xml/echoCentralAccountProduct.xml")
     shortCode="eCnt"
     productId = o_utils.getInstanceIdByProperty("product", "shortCode", shortCode)
 
@@ -49,16 +48,16 @@ def simpleDataSet():
     for i in range(10):
         if i%100==0:
             print "account #", i
-        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance.xml"))
-        accountId = o_utils.getIdFromJSON(s_utils.createAccountInstance(accountTemplateId, userTemplateId, productId, eCntBProdId, eCKBProdId, userId, shortCode, "../"+format+"/accountInstance.xml", case=i))
-        s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser.xml", case=i)
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../xml/userInstance.xml"))
+        accountId = o_utils.getIdFromJSON(s_utils.createAccountInstance(accountTemplateId, userTemplateId, productId, eCntBProdId, eCKBProdId, userId, shortCode, "../xml/accountInstance.xml", case=i))
+        s_utils.addAccountUser(accountId, userId, "../xml/accountAddUser.xml", case=i)
         for j in range(9):
-            userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance.xml", case=10000*i+j))
-            s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser.xml", case=i)
+            userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../xml/userInstance.xml", case=10000*i+j))
+            s_utils.addAccountUser(accountId, userId, "../xml/accountAddUser.xml", case=i)
         if t_utils.randomBoolean(0.6):
-            s_utils.setStatus("account", accountId, "Live", "../"+format+"/accountSetDeepStatus.xml", case=i)
+            s_utils.setStatus("account", accountId, "Live", "../xml/accountSetDeepStatus.xml", case=i)
         if t_utils.randomBoolean(0.6):
-            s_utils.updateAccount(accountId, "../"+format+"/accountAddSubscription.xml", substitutions = {"{eCTProductId}":eCTBProdId}, case=i)
+            s_utils.updateAccount(accountId, "../xml/accountAddSubscription.xml", substitutions = {"{eCTProductId}":eCTBProdId}, case=i)
 
 
     print Date()
@@ -87,9 +86,9 @@ def servicesCatalog(format="xml"):
 
     #account.create
     def createAccount(contentType="xml"):
-        productTemplateId = o_utils.getTemplateIdByName("EC Product Template")
-        accountTemplateId = o_utils.getTemplateIdByName("echoCentral Account Template")
-        userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+        productTemplateId = o_utils.getTemplateIdByName("Product Template")
+        accountTemplateId = o_utils.getTemplateIdByName("Account Template")
+        userTemplateId = o_utils.getTemplateIdByName("User Template")
         productId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCnt")
         eCntBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCntB")
         eCKBProdId = o_utils.getInstanceIdByProperty("product", "shortCode", "eCKB")
@@ -101,7 +100,7 @@ def servicesCatalog(format="xml"):
 
     #account.update
     def accountMainUser(accountId, contentType="xml"):
-        userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+        userTemplateId = o_utils.getTemplateIdByName("User Template")
         userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType))
         s_utils.setAccountMainUser(accountId, userId, "../"+format+"/accountMainUser."+format, contentType=contentType)
         return userId
@@ -151,7 +150,7 @@ def servicesCatalog(format="xml"):
     s_utils.showLink(accountId,"account/")
 
 
-    userTemplateId = o_utils.getTemplateIdByName("echoCentral User Template")
+    userTemplateId = o_utils.getTemplateIdByName("User Template")
     for i in range(1):
         userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
         s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser."+format, contentType=contentType(format))
