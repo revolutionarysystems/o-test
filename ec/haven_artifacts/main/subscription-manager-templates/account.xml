@@ -1,0 +1,23 @@
+<account xmlns:o="http://test/" o:name="Account Template">
+	<subscriptions o:nature="collection" o:memberNature="object">
+		<subscription o:nature="object">
+			<status/>
+			<title/>
+			<startTime o:nature="time"/>
+			<endTime o:nature="time"/>
+			<governingProduct o:nature="link" o:assocType="product"/>
+		</subscription>
+	</subscriptions>
+	<status/>
+	<title/>
+	<description/>
+	<accountNumber/>
+	<startTime o:nature="time"/>
+	<endTime o:nature="time"/>
+	<usesUserTemplate o:nature="link" o:assocType="template" o:refType="name"/>
+	<governingProduct o:nature="link" o:assocType="product"/>
+	<mainUser o:nature="link" o:assocType="user"/>
+	<users o:nature="collection" o:memberNature="link">
+		<user o:nature="link" o:assocType="user"/>
+	</users>
+</account>
