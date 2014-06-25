@@ -96,6 +96,8 @@ def getResponse(connection):
     return response
     
 def readInputStreamToString(inStream):
+    if(inStream == None):
+        return "";
     rd= BufferedReader(InputStreamReader(inStream))
     response = ""
     line = rd.readLine()

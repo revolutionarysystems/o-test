@@ -179,9 +179,9 @@ def servicesCatalog(format="xml"):
     s_utils.updateAccount(accountId, "../"+format+"/accountDeleteUsers."+format, substitutions = {"{users}":t_utils.buildLinkCollection("users", "user", userIds, format=format)}, contentType=contentType(format))
 
 
-#simpleDataSet()    
+simpleDataSet()    
 
-servicesCatalog(format="xml")
+#servicesCatalog(format="xml")
 #servicesCatalog(format="json")
 
 def queryCatalog():
