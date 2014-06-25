@@ -19,7 +19,7 @@ def loadTemplate(case, name="", uid="", trace=0):
         print case
         print name
         print uid
-    response = HttpCall.callHttpPOST(server, "objectology/template/"+contextExtension, {"data":case}).strip()
+    response = HttpCall.callHttpPOST(server, "objectology/template/"+contextExtension, case).strip()
     return response
 
 def loadTemplateFromFile(definitionFile):
@@ -136,11 +136,11 @@ def clearTemplates():
         deleteTemplate(uid)
         
 def createInstance(instanceType, case, contentType="text/xml"):
-    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/", {"data":case}, contentType=contentType).strip()
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/", case, contentType=contentType).strip()
     return response
     
 def applyDelta(instanceTypeAndId, case, contentType="text/xml"):
-    response = HttpCall.callHttpPOST(server, "objectology/"+instanceTypeAndId+"/", {"data":case}, contentType=contentType).strip()
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceTypeAndId+"/", case, contentType=contentType).strip()
     return response
     
 def deleteInstance(instanceType, uid): 
@@ -162,7 +162,7 @@ def getCollectionFromJSON(objectStr, collection):
     return attList[collection]
 
 def makeQuery(instanceType, case):
-    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/query", {"data":case}, contentType="application/json").strip()
+    response = HttpCall.callHttpPOST(server, "objectology/"+instanceType+"/query", case, contentType="application/json").strip()
     null = None
     instances = eval(response)
     return instances

@@ -7,17 +7,19 @@ from java.io import BufferedReader
 from java.io import InputStreamReader
 
 def post(targetURL, params, contentType="text/xml", username=None):
-
-    #paramStr = params["data"]
-    paramStr = ""
-    for aKey in params.keys():
-        paramStr+=aKey+"="+URLEncoder.encode(params[aKey], "UTF-8")+"&"
-    paramStr=paramStr[:-1]
+    
+    if(type(params) is dict):
+        paramStr = ""
+        for aKey in params.keys():
+            paramStr+=aKey+"="+URLEncoder.encode(params[aKey], "UTF-8")+"&"
+        paramStr=paramStr[:-1]
+    else:
+        paramStr = params
+        
     url = URL(targetURL)
     print targetURL
     print paramStr
     print contentType
-
     connection = url.openConnection()
     if username!=None:    
         userpass = username
@@ -36,16 +38,7 @@ def post(targetURL, params, contentType="text/xml", username=None):
     wr.writeBytes(paramStr)
     wr.flush()
     wr.close()
-    
-    inStream= connection.getInputStream()
-    rd= BufferedReader(InputStreamReader(inStream))
-    response = ""
-    line = rd.readLine()
-    while line != None:
-        response +=line+"\r"
-        line = rd.readLine()
-    rd.close()
-    return response
+    return getResponse(connection);
     
 def get(targetURL, params, username=None):
 
@@ -68,15 +61,7 @@ def get(targetURL, params, username=None):
     connection.setUseCaches(0)
     connection.setDoOutput(2)
     
-    inStream= connection.getInputStream()
-    rd= BufferedReader(InputStreamReader(inStream))
-    response = ""
-    line = rd.readLine()
-    while line != None:
-        response +=line+"\r"
-        line = rd.readLine()
-    rd.close()
-    return response
+    return getResponse(connection);
     
 def delete(targetURL, params):
     url = URL(targetURL)
@@ -85,15 +70,7 @@ def delete(targetURL, params):
     connection.setRequestProperty("Content-Language", "en-GB")
     connection.setUseCaches(0)
     connection.setDoOutput(2)
-    inStream= connection.getInputStream()
-    rd= BufferedReader(InputStreamReader(inStream))
-    response = ""
-    line = rd.readLine()
-    while line != None:
-        response +=line+"\r"
-        line = rd.readLine()
-    rd.close()
-    return response
+    return getResponse(connection);
     
 
 def callHttpPOST(uri, service, data, contentType="text/xml", username=None):
@@ -106,6 +83,26 @@ def callHttpDELETE(uri, service, data):
     
 def callHttpGET(uri, service, data, username=None):
     response = get(uri+service, data, username=username)
+    return response
+    
+def getResponse(connection):
+    responseCode = connection.getResponseCode()
+    if(responseCode >= 400):
+        inStream = connection.getErrorStream()
+        errorMessage = readInputStreamToString(inStream)
+        raise Exception("Server return HTTP response code: " + str(responseCode) + " (" + errorMessage + ") for URL: " + connection.getURL().toString())
+    inStream= connection.getInputStream()
+    response = readInputStreamToString(inStream)
+    return response
+    
+def readInputStreamToString(inStream):
+    rd= BufferedReader(InputStreamReader(inStream))
+    response = ""
+    line = rd.readLine()
+    while line != None:
+        response +=line+"\r"
+        line = rd.readLine()
+    rd.close()
     return response
     
     
