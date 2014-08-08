@@ -1,8 +1,17 @@
 <user xmlns:o="http://test/" o:name="User Template">
-	<status/>
-	<name/>
-	<startTime o:nature="time"/>
-	<endTime o:nature="time"/>
-	<contactDetails/>
-	<user-manager-id/>
+    <viewConstraints>
+        <securityConstraint o:nature="isUser"/>
+        <securityConstraint o:nature="isAccountOwner"/>
+    </viewConstraints>
+    <creationConstraints>
+        <securityConstraint o:nature="isAdministrator"/>
+    </creationConstraints>
+    <attributes>
+        <account o:nature="link"/>
+        <status o:nature="property"/>
+        <customerName o:nature="property"/>
+        <startTime o:nature="time"/>
+        <endTime o:nature="time"/>
+        <contactDetails o:nature="property"/>
+    </attributes>
 </user>

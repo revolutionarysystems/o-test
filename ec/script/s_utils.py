@@ -16,8 +16,8 @@ def createProductInstance(productTemplateId, accountTemplateId, definition, cont
     testData = t_utils.getTestData(definition, substitutions = {"{templateId}":productTemplateId, "{accountTemplateId}":accountTemplateId})
     return o_utils.createInstance("product", testData, contentType=contentType)            
     
-def createUserInstance(userTemplateId, definition, case=None, contentType="text/xml"):
-    testData = t_utils.getTestData(definition, substitutions = {"{templateId}":userTemplateId}, case=case)
+def createUserInstance(userTemplateId, accountId, definition, case=None, contentType="text/xml"):
+    testData = t_utils.getTestData(definition, substitutions = {"{templateId}":userTemplateId, "{accountId}": accountId}, case=case)
     return o_utils.createInstance("user", testData, contentType=contentType)            
     
 def createSubscriptionInstance(subscriptionTemplateId, userTemplateId, productId, userId, shortCode, definition):

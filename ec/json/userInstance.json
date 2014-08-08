@@ -1,5 +1,6 @@
 {
 	"template": "{templateId}",
+    "account": "{accountId}",
 	"status": "Active",
 	"name": "{=randomName()}",
 	"startTime": "11/04/2014 00:00:00",

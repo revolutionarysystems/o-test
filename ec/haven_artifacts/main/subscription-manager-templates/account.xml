@@ -1,23 +1,23 @@
 <account xmlns:o="http://test/" o:name="Account Template">
-	<subscriptions o:nature="collection" o:memberNature="object">
-		<subscription o:nature="object">
-			<status/>
-			<title/>
-			<startTime o:nature="time"/>
-			<endTime o:nature="time"/>
-			<governingProduct o:nature="link" o:assocType="product"/>
-		</subscription>
-	</subscriptions>
-	<status/>
-	<title/>
-	<description/>
-	<accountNumber/>
-	<startTime o:nature="time"/>
-	<endTime o:nature="time"/>
-	<usesUserTemplate o:nature="link" o:assocType="template" o:refType="name"/>
-	<governingProduct o:nature="link" o:assocType="product"/>
-	<mainUser o:nature="link" o:assocType="user"/>
-	<users o:nature="collection" o:memberNature="link">
-		<user o:nature="link" o:assocType="user"/>
-	</users>
+    <viewConstraints>
+        <securityConstraint o:nature="isAccountOwner"/>
+    </viewConstraints>
+    <creationConstraints>
+        <securityConstraint o:nature="isAdministrator"/>
+    </creationConstraints>
+    <attributes>
+        <subscriptions o:nature="linkedObjects" o:type="subscription" o:link="account"/>
+        <status o:nature="property"/>
+        <title o:nature="property"/>
+        <description o:nature="property"/>
+        <accountNumber o:nature="sequence" o:name="accountNumber" o:length="8"/>
+        <startTime o:nature="time"/>
+        <endTime o:nature="time"/>
+        <usesUserTemplate o:nature="link" o:associatedType="template" o:referenceType="name"/>
+        <governingProduct o:nature="link" o:associatedType="product" o:referenceType="name"/>
+        <mainUser o:nature="link" o:associatedType="user"/>
+        <users o:nature="linkedObjects" o:type="user" o:link="account"/>
+        <paymentSubscriptionReference o:nature="property"/>
+        <paymentSubscriptionPlan o:nature="property"/>
+    </attributes>
 </account>

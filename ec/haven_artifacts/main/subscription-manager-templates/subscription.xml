@@ -1,0 +1,34 @@
+<subscription xmlns:o="http://test/" o:name="Subscription Template">
+    <viewConstraints>
+        <securityConstraint o:nature="isAccountOwner"/>
+    </viewConstraints>
+    <creationConstraints>
+        <securityConstraint o:nature="isAdministrator"/>
+    </creationConstraints>
+    <attributes>
+        <account o:nature="link" o:associatedType="account"/>
+        <status o:nature="property"/>
+        <title o:nature="property"/>
+        <startTime o:nature="time"/>
+        <endTime o:nature="time"/>
+        <governingProduct o:nature="link" o:associatedType="product" o:referenceType="name"/>
+        <assets o:nature="collection">
+            <memberTemplate o:nature="object">
+                <attributes>
+                    <title o:nature="property"/>
+                    <value o:nature="property"/>
+                    <status o:nature="property"/>
+                </attributes>
+            </memberTemplate>
+        </assets>
+    </attributes>
+    <actions>
+        <addAsset o:nature="addToCollection">
+            <collection>assets</collection>
+            <item>asset</item>
+        </addAsset>
+        <updateAssets o:nature="updateAttribute">
+            <attribute>assets</attribute>
+        </updateAssets>
+    </actions>
+</subscription>

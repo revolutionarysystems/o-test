@@ -48,11 +48,11 @@ def simpleDataSet():
     for i in range(10):
         if i%100==0:
             print "account #", i
-        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../xml/userInstance.xml"))
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"","../xml/userInstance.xml"))
         accountId = o_utils.getIdFromJSON(s_utils.createAccountInstance(accountTemplateId, userTemplateId, productId, eCntBProdId, eCKBProdId, userId, shortCode, "../xml/accountInstance.xml", case=i))
         s_utils.addAccountUser(accountId, userId, "../xml/accountAddUser.xml", case=i)
         for j in range(9):
-            userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../xml/userInstance.xml", case=10000*i+j))
+            userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,accountId,"../xml/userInstance.xml", case=10000*i+j))
             s_utils.addAccountUser(accountId, userId, "../xml/accountAddUser.xml", case=i)
         if t_utils.randomBoolean(0.6):
             s_utils.setStatus("account", accountId, "Live", "../xml/accountSetDeepStatus.xml", case=i)
@@ -101,7 +101,7 @@ def servicesCatalog(format="xml"):
     #account.update
     def accountMainUser(accountId, contentType="xml"):
         userTemplateId = o_utils.getTemplateIdByName("User Template")
-        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType))
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,accountId,"../"+format+"/userInstance."+format, contentType=contentType))
         s_utils.setAccountMainUser(accountId, userId, "../"+format+"/accountMainUser."+format, contentType=contentType)
         return userId
     userId = accountMainUser(accountId, contentType=contentType(format))
@@ -116,10 +116,10 @@ def servicesCatalog(format="xml"):
     #account.delete
     o_utils.deleteInstance("account", accountId)
 
-    try:
-        print o_utils.getIdFromJSON(o_utils.getInstance("account", accountId))
-    except FileNotFoundException, e:
-        print "Not Found:",e
+    #try:
+    #    print o_utils.getIdFromJSON(o_utils.getInstance("account", accountId))
+    #except FileNotFoundException, e:
+    #    print "Not Found:",e
 
 
 
@@ -152,8 +152,8 @@ def servicesCatalog(format="xml"):
 
     userTemplateId = o_utils.getTemplateIdByName("User Template")
     for i in range(1):
-        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
-        s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser."+format, contentType=contentType(format))
+        userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,accountId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
+        #s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser."+format, contentType=contentType(format))
     s_utils.showLink(accountId,"account/")
 
 
@@ -165,7 +165,7 @@ def servicesCatalog(format="xml"):
         s_utils.showLink(user,"user/")
 
     #user.create
-    userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
+    userId = o_utils.getIdFromJSON(s_utils.createUserInstance(userTemplateId,accountId,"../"+format+"/userInstance."+format, contentType=contentType(format)))
     s_utils.addAccountUser(accountId, userId, "../"+format+"/accountAddUser."+format, contentType=contentType(format))
     s_utils.showLink(accountId,"account/")
 

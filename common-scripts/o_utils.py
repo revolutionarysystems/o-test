@@ -157,6 +157,7 @@ def clearInstances(instanceType):
             print e
 
 def getCollectionFromJSON(objectStr, collection):
+    print objectStr;
     null = None
     attList = eval(objectStr)
     return attList[collection]
